@@ -1,0 +1,49 @@
+.techs {
+    padding: 100px 70px;
+    background-color: #272727;
+  }
+
+  .techs__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .techs__title {
+    font-size: 22px;
+    font-weight: 400;
+    padding-bottom: 23px;
+    border-bottom: 1px solid #dadada;
+    margin: 0 0 90px;
+    letter-spacing: -1px;
+  }
+
+  .techs__paragraph-title {
+    margin: 0 0 26px;
+    font-size: 50px;
+    font-weight: 400;
+    letter-spacing: -1px;
+  }
+
+  .techs__paragraph {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0 0 100px;
+    line-height: 20px;
+    max-width: 460px;
+    text-align: center;
+  }
+
+  .techs__list {
+    display: inline-flex;
+    gap: 10px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .techs__item {
+    padding: 20px 30px;
+    background-color: #303030;
+    border-radius: 10px;
+  }

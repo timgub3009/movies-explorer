@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import clickingLogo from "../../images/logo.svg";
+import './Header.css';
 
 const Header = () => {
   return (
     <header className="header">
-      <Link to="/" className="header__logo-link">
+      <Link to="/" className="header__link">
         <img src={clickingLogo} alt="Эмблема сайта" className="header__logo" />
       </Link>
       <nav className="header__nav">
@@ -15,7 +16,7 @@ const Header = () => {
               Регистрация
             </Link>
           </li>
-          <li className="header__nav-item">
+          <li className="header__list-item">
             <Link
               to="/signin"
               className="header__link header__link_type_bright"

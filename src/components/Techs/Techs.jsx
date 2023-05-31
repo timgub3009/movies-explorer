@@ -1,11 +1,12 @@
 import React from "react";
+import './Techs.css';
 
 const Techs = () => {
   return (
     <section className="techs">
-      <h2 className="techs__heading">Технологии</h2>
+      <h2 className="techs__title">Технологии</h2>
       <div className="techs__container">
-        <h3 className="techs__title">7 технологий</h3>
+        <h3 className="techs__paragraph-title">7 технологий</h3>
         <p className="techs__paragraph">
           На курсе веб-разработки мы освоили технологии, которые применили в
           дипломном проекте.

@@ -1,12 +1,13 @@
 import React from "react";
 import avatar from "../../images/personal_photo.jpeg";
+import './AboutMe.css';
 
 const AboutMe = () => {
   return (
     <section className="about-me">
       <h2 className="about-me__heading">Студент</h2>
       <div className="about-me__container">
-        <div className="about-me__descripton">
+        <div className="about-me__description">
           <h3 className="about-me__title">Губейдулин Тимур</h3>
           <p className="about-me__subtitle">Веб-разработчик, 30 лет</p>
           <p className="about-me__content">

@@ -1,4 +1,6 @@
 import React from "react";
+import "./Portfolio.css";
+import index from "../../images/index.svg";
 
 const Portfolio = () => {
   return (
@@ -10,7 +12,12 @@ const Portfolio = () => {
             className="portfolio__link"
             href="https://github.com/timgub3009/how-to-learn"
           >
-            Статичный сайт
+            <p className="portfolio__link-text">Статичный сайт</p>
+            <img
+              className="portfolio__link-image"
+              src={index}
+              alt="Кликабельная стрелка для перехода на сайт"
+            />
           </a>
         </li>
         <li className="portfolio__item">
@@ -18,7 +25,12 @@ const Portfolio = () => {
             className="portfolio__link"
             href="https://github.com/timgub3009/russian-travel"
           >
-            Адаптивный сайт
+            <p className="portfolio__link-text">Адаптивный сайт</p>
+            <img
+              className="portfolio__link-image"
+              src={index}
+              alt="Кликабельная стрелка для перехода на сайт"
+            />
           </a>
         </li>
         <li className="portfolio__item">
@@ -26,7 +38,12 @@ const Portfolio = () => {
             className="portfolio__link"
             href="https://github.com/timgub3009/react-mesto-api-full-gha"
           >
-            Одностраничное приложение
+            <p className="portfolio__link-text">Одностраничное приложение</p>
+            <img
+              className="portfolio__link-image"
+              src={index}
+              alt="Кликабельная стрелка для перехода на сайт"
+            />
           </a>
         </li>
       </ul>
