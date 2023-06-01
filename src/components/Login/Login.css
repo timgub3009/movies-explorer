@@ -1,0 +1,109 @@
+.signin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 0;
+}
+
+.signin__container {
+  min-width: 396px;
+}
+
+.signin__logo {
+  width: 38px;
+  height: 38px;
+  margin-bottom: 40px;
+  transition: 0.6s;
+}
+
+.signin__heading {
+  margin: 0 0 40px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.signin__label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signin__placeholder {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.12;
+  color: #8b8b8b;
+}
+
+.signin__form {
+  display: flex;
+  flex-direction: column;
+  border: none;
+}
+
+.signin__input {
+  min-height: 27px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.16;
+  box-sizing: border-box;
+  padding: 15px;
+  border: 0;
+  background-color: #2f2f2f;
+  color: #fff;
+  border-radius: 8px;
+}
+
+.signin__link {
+  text-decoration: none;
+  transition: 0.6s;
+  cursor: pointer;
+  color: #4285f4;
+}
+
+.signin__link:hover {
+  opacity: 0.6;
+}
+
+.popup__error {
+  opacity: 1;
+  color: #ee3465;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 1.12;
+  transition: 0.3s;
+}
+
+.signin__button {
+  background-color: #4285f4;
+  border-radius: 3px;
+  color: #fff;
+  min-height: 45px;
+  font-size: 14px;
+  line-height: 1.17;
+  font-weight: 500;
+  border: none;
+  width: 100%;
+  transition: 0.6s;
+  padding: 0;
+  cursor: pointer;
+  margin-top: 157px;
+}
+
+.signin__question {
+  margin: 16px 0 0;
+  text-align: center;
+  color: #8b8b8b;
+  font-size: 14px;
+  line-height: 1.17;
+}
+
+.signin__button:hover {
+  opacity: 0.7;
+}
+
+.signin__logo:hover {
+  opacity: 0.7;
+}
