@@ -1,5 +1,5 @@
 .header {
-  background-color: #073042;
+  background-color: #202020;
   display: flex;
   justify-content: space-between;
   padding: 20px 70px;
@@ -8,44 +8,11 @@
   box-sizing: border-box;
 }
 
-.header__nav {
-  display: flex;
-  align-items: center;
+.header_type_unauthorized {
+  background-color: #073042;
 }
 
 .header__logo {
   width: 38px;
   height: 38px;
-}
-
-.header__list {
-  display: flex;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-}
-
-.header__list-item {
-  list-style-type: none;
-}
-
-.header__link {
-  background-color: transparent;
-  text-decoration: none;
-  margin: 0;
-  padding: 0;
-  color: #fff;
-  cursor: pointer;
-  transition: ease-in-out 0.5s;
-}
-
-.header__link:hover {
-  opacity: 0.5;
-}
-
-.header__link_type_bright {
-  background-color: #3ddc84;
-  padding: 8px 20px;
-  border-radius: 3px;
-  color: #000;
 }

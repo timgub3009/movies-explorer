@@ -1,0 +1,47 @@
+.filter {
+  display: flex;
+  margin: 0 30px 0 70px;
+}
+
+.filter__text {
+  margin: 0;
+}
+
+.filter__checkbox {
+  position: relative;
+}
+
+.filter__input {
+  display: none;
+}
+
+.filter__input:checked + .filter__toggler {
+  background-color: #3ddc84;
+}
+
+.filter__input:checked + .filter__toggler::before {
+  transform: translateX(15px);
+}
+
+.filter__toggler {
+  background-color: #8b8b8b;
+  position: absolute;
+  cursor: pointer;
+  top: -1px;
+  right: 15px;
+  border-radius: 20px;
+  width: 36px;
+  height: 20px;
+  transition: 0.6s;
+}
+
+.filter__toggler::before {
+  background-color: #ffffff;
+  content: "";
+  height: 16px;
+  width: 16px;
+  position: absolute;
+  border-radius: 50%;
+  right: 18px;
+  top: 2px;
+}
