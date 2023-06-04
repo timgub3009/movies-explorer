@@ -33,6 +33,10 @@
     cursor: pointer;
 }
 
+.cards__button-more_type_invisible {
+  display: none;
+}
+
 @media(max-width: 1279px) {
     .cards__items {
       grid-template-columns: repeat(3, auto);

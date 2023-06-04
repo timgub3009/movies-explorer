@@ -1,0 +1,34 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 184px;
+  padding-bottom: 60px;
+}
+
+.not-found__container {
+  padding-top: 246px;
+  min-width: 400px;
+  gap: 5px;
+}
+
+.not-found__title {
+  font-size: 140px;
+  font-weight: 400;
+  text-align: center;
+  margin: 0;
+  line-height: 169px;
+}
+
+.not-found__subtitle {
+  margin: 0;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.not-found__link {
+  text-decoration: none;
+  color: #4285f4;
+}

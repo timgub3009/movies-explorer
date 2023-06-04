@@ -17,7 +17,7 @@ const Register = () => {
         </Link>
         <h2 className="signup__heading">Добро пожаловать!</h2>
         <form className="signup__form">
-          <label htmlFor="" className="signup__label">
+          <label htmlFor="name" className="signup__label">
             <span className="signup__placeholder">Имя</span>
             <input
               className="signup__input"
@@ -33,7 +33,7 @@ const Register = () => {
               Что-то пошло не так
             </span>
           </label>
-          <label htmlFor="" className="signup__label">
+          <label htmlFor="email" className="signup__label">
             <span className="signup__placeholder">E-mail</span>
             <input
               className="signup__input"
@@ -49,7 +49,7 @@ const Register = () => {
               Что-то пошло не так
             </span>
           </label>
-          <label htmlFor="" className="signup__label">
+          <label htmlFor="password" className="signup__label">
             <span className="signup__placeholder">Пароль</span>
             <input
               className="signup__input"
