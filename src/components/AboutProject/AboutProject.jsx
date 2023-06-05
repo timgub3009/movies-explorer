@@ -4,6 +4,7 @@ import "./AboutProject.css";
 const AboutProject = () => {
   return (
     <section className="about-project">
+      <div className="about-project__wrapper">
       <h2 className="about-project__title">О проекте</h2>
       <div className="about-project__paragraphs">
         <div className="about-project__paragraph">
@@ -34,6 +35,7 @@ const AboutProject = () => {
       <div className="about-project__subbar">
         <span className="about-project__bar-text">Back-end</span>
         <span className="about-project__bar-text">Front-end</span>
+      </div>
       </div>
     </section>
   );

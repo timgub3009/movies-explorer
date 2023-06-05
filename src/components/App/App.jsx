@@ -24,7 +24,7 @@ const App = () => {
               <Footer />
             </>
           }
-        ></Route>
+        />
         <Route
           path="/movies"
           element={
@@ -34,7 +34,7 @@ const App = () => {
               <Footer />
             </>
           }
-        ></Route>
+        />
         <Route
           path="/saved-movies"
           element={
@@ -44,7 +44,7 @@ const App = () => {
               <Footer />
             </>
           }
-        ></Route>
+        />
         <Route
           path="/profile"
           element={
@@ -54,9 +54,9 @@ const App = () => {
               <Footer />
             </>
           }
-        ></Route>
-        <Route path="/signin" element={<Login />}></Route>
-        <Route path="/signup" element={<Register />}></Route>
+        />
+        <Route path="/signin" element={<Login />} />
+        <Route path="/signup" element={<Register />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

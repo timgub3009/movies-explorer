@@ -5,12 +5,15 @@ import index from "../../images/index.svg";
 const Portfolio = () => {
   return (
     <section className="portfolio">
+      <div className="portfolio__wrapper">
       <h2 className="portfolio__heading">Портфолио</h2>
       <ul className="portfolio__list">
         <li className="portfolio__item">
           <a
             className="portfolio__link"
             href="https://github.com/timgub3009/how-to-learn"
+            target="_blank"
+            rel="noreferrer"
           >
             <p className="portfolio__link-text">Статичный сайт</p>
             <img
@@ -24,6 +27,8 @@ const Portfolio = () => {
           <a
             className="portfolio__link"
             href="https://github.com/timgub3009/russian-travel"
+            target="_blank"
+            rel="noreferrer"
           >
             <p className="portfolio__link-text">Адаптивный сайт</p>
             <img
@@ -37,6 +42,8 @@ const Portfolio = () => {
           <a
             className="portfolio__link"
             href="https://github.com/timgub3009/react-mesto-api-full-gha"
+            target="_blank"
+            rel="noreferrer"
           >
             <p className="portfolio__link-text">Одностраничное приложение</p>
             <img
@@ -47,6 +54,7 @@ const Portfolio = () => {
           </a>
         </li>
       </ul>
+      </div>
     </section>
   );
 };

@@ -4,6 +4,7 @@ import './Techs.css';
 const Techs = () => {
   return (
     <section className="techs">
+      <div className="techs__wrapper">
       <h2 className="techs__title">Технологии</h2>
       <div className="techs__container">
         <h3 className="techs__paragraph-title">7 технологий</h3>
@@ -21,6 +22,8 @@ const Techs = () => {
           <li className="techs__item">mongoDB</li>
         </ul>
       </div>
+      </div>
+
     </section>
   );
 };

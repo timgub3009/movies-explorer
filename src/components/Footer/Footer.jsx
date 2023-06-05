@@ -1,5 +1,5 @@
 import React from "react";
-import './Footer.css';
+import "./Footer.css";
 
 const currentYear = new Date().getFullYear();
 
@@ -17,12 +17,19 @@ const Footer = () => {
               <a
                 href="https://practicum.yandex.ru/profile/web/"
                 className="footer__link"
+                target="_blank"
+                rel="noreferrer"
               >
                 Яндекс.Практикум
               </a>
             </li>
             <li className="footer__list-item">
-              <a href="https://github.com/timgub3009" className="footer__link">
+              <a
+                href="https://github.com/timgub3009"
+                className="footer__link"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Github
               </a>
             </li>
