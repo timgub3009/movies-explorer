@@ -31,4 +31,26 @@
 .not-found__link {
   text-decoration: none;
   color: #4285f4;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 550px) {
+  .not-found__title {
+    font-size: 80px;
+    line-height: 1;
+  }
+  .not-found__subtitle {
+    font-size: 12px;
+  }
+  .not-found__link {
+    font-size: 12px;
+  }
+  .not-found__container {
+    padding-top: 329px;
+    min-width: 300px;
+  }
+  .not-found {
+    gap: 284px;
+    padding-bottom: 20px;
+  }
 }

@@ -51,7 +51,6 @@ const App = () => {
             <>
               <Header loggedIn={true} />
               <Profile />
-              <Footer />
             </>
           }
         />

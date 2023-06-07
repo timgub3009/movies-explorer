@@ -45,3 +45,21 @@
   right: 18px;
   top: 2px;
 }
+
+.filter__text {
+  font-size: 14px;
+  line-height: 1.14;
+}
+
+@media screen and (max-width: 550px) {
+  .filter {
+    margin: 0 135px 0 186px;
+  }
+
+  .filter__text {
+    font-size: 11px;
+  }
+  .filter__toggler {
+    top: -4px;
+  }
+}

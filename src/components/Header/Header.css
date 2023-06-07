@@ -6,6 +6,7 @@
   min-height: 74px;
   max-width: 100%;
   box-sizing: border-box;
+  align-items: center;
 }
 
 .header_type_unauthorized {
@@ -19,12 +20,18 @@
 
 @media screen and (max-width: 800px) {
   .header {
+    padding: 15px 30px;
+  }
+  .header_type_unauthorized {
     padding: 20px 30px;
   }
 }
 
 @media screen and (max-width: 550px) {
   .header {
+    padding: 15px 15px;
+  }
+  .header_type_unauthorized {
     padding: 18px 14px;
   }
 }

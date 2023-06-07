@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import './NavigationUnauthorized.css';
 
 const NavigationUnauthorized = () => {
   return (
     <nav className="navigation">
-        <ul className="navigation__list">
+        <ul className="navigation__list_type_unauthorized">
           <li className="navigation__list-item">
             <NavLink to="/signup" className="navigation__link">
               Регистрация

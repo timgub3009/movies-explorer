@@ -7,7 +7,7 @@
 
 .cards__items {
     list-style-type: none;
-    padding: 0;
+    padding: 70px 0 0;
     margin: 0 0 10px;
     display: grid;
     grid-template-columns: repeat(4, auto);
@@ -46,11 +46,23 @@
   @media(max-width: 1000px) {
     .cards__items {
       grid-template-columns: repeat(2, auto);
+      column-gap: 30px;
+      row-gap: 30px;
     }
   }
   
   @media(max-width: 720px) {
     .cards__items {
       grid-template-columns: repeat(1, auto);
-    }
+  }
+}
+  
+  @media(max-width: 550px) {
+    .cards__items {
+      row-gap: 34px;
+  }
+
+.cards__button-container {
+  min-width: 240px;
+}
   }

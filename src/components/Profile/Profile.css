@@ -69,3 +69,16 @@
 .profile__link_type_signout {
   color: #ee3465;
 }
+
+@media screen and (max-width: 550px) {
+  .profile {
+    padding: 70px 0 40px;
+  }
+  .profile__form {
+    margin-bottom: 360px;
+    min-width: 260px;
+  }
+  .profile__heading {
+    margin: 0 0 80px;
+  }
+}
