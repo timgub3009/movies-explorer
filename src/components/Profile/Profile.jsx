@@ -13,7 +13,7 @@ const Profile = () => {
             type="text"
             id="name"
             className="profile__input"
-            value="Тимур"
+            defaultValue="Тимур"
           />
         </label>
         <label htmlFor="email" className="profile__label">
@@ -22,7 +22,7 @@ const Profile = () => {
             type="email"
             id="email"
             className="profile__input"
-            value="timur3009@yandex.ru"
+            defaultValue="timur3009@yandex.ru"
           />
         </label>
       </form>

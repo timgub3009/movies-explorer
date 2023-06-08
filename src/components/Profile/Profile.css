@@ -64,10 +64,19 @@
   line-height: 15px;
   text-align: center;
   text-decoration: none;
+  transition: 0.6s;
+}
+
+.profile__link:hover {
+  opacity: 0.7;
 }
 
 .profile__link_type_signout {
   color: #ee3465;
+}
+
+.profile__input:focus {
+  outline: 1px ridge #4285f4; border-radius: 2rem;
 }
 
 @media screen and (max-width: 550px) {

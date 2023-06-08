@@ -40,6 +40,10 @@
     padding: 0 18px 0 46px;
 }
 
+.search__input:focus {
+    outline: none;
+  }
+
 @media screen and (max-width: 800px) {
 
   }
@@ -73,7 +77,7 @@
     }
     .search__button {
         border-right: none;
-        padding: 0;
+        padding: 0 0 0 19px;
     }
   }
 
