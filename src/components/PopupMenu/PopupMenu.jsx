@@ -5,7 +5,11 @@ import icon from "../../images/acc_icon.svg";
 
 const PopupMenu = ({ isOpen, setIsOpen }) => {
   return (
-    <aside className={isOpen ? "menu__sidebar menu__sidebar_type_open" : "menu__sidebar"}>
+    <aside
+      className={
+        isOpen ? "menu__sidebar menu__sidebar_type_open" : "menu__sidebar"
+      }
+    >
       <div
         className={
           isOpen ? "menu__wrapper menu__wrapper_type_opened" : "menu__wrapper"

@@ -76,7 +76,8 @@
 }
 
 .profile__input:focus {
-  outline: 1px ridge #4285f4; border-radius: 2rem;
+  outline: 1px ridge #4285f4;
+  border-radius: 2rem;
 }
 
 @media screen and (max-width: 550px) {

@@ -54,8 +54,7 @@
   padding: 0;
   margin: 0;
   border: none;
-  background: url("../../images/burger-menu.svg") center center/cover
-    no-repeat;
+  background: url("../../images/burger-menu.svg") center center/cover no-repeat;
   cursor: pointer;
   transition: opacity 0.5s ease-in-out;
   position: absolute;

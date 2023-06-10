@@ -14,7 +14,7 @@ const NavigationUnauthorized = () => {
           <li className="navigation__list-item">
             <NavLink
               to="/signin"
-              className="navigation__link navigation__link_type_bright"
+              className="navigation__link_type_bright"
             >
               Войти
             </NavLink>

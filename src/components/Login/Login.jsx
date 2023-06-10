@@ -8,11 +8,7 @@ const Login = () => {
       <div className="signin__container">
         <Link to="/">
           {" "}
-          <img
-            src={loginLogo}
-            alt="Эмблема сайта"
-            className="signin__logo"
-          />
+          <img src={loginLogo} alt="Эмблема сайта" className="signin__logo" />
         </Link>
         <h2 className="signin__heading">Рады видеть!</h2>
         <form className="signin__form">

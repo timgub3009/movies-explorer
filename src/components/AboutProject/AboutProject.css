@@ -64,7 +64,7 @@
 }
 
 .about-project__subbar {
-  color: #A0A0A0;
+  color: #a0a0a0;
   display: grid;
   grid-template-columns: 20% 80%;
   width: 100%;
@@ -74,7 +74,6 @@
 }
 
 @media screen and (max-width: 800px) {
-
   .about-project__wrapper {
     padding: 90px 50px;
   }
@@ -125,5 +124,5 @@
   .about-project__subbar {
     grid-template-columns: 35% 65%;
     font-size: 11px;
-}
+  }
 }
