@@ -68,7 +68,7 @@
 }
 
 .popup__error {
-  opacity: 1;
+  opacity: 0;
   color: #ee3465;
   font-weight: 400;
   font-size: 10px;
@@ -76,6 +76,10 @@
   transition: 0.3s;
   position: relative;
   top: -5px;
+}
+
+.popup__error_active {
+  opacity: 1;
 }
 
 .signup__button {
