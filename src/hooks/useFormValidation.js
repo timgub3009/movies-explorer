@@ -12,6 +12,7 @@ function useFormValidation() {
     setErrors((errors) => ({ ...errors, [name]: error }));
     const isValid = event.target.closest("form").checkValidity();
     setIsValid(isValid);
+    console.log(error);
   };
 
   const resetValidation = React.useCallback(

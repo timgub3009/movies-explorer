@@ -1,19 +1,21 @@
 import React from "react";
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import safeStorage from "../../utils/safe-storage";
+import {filteredMovies} from "../SearchForm/SearchForm";
 
-const MoviesCardList = ({ moviesAreLeft, isSaved, renderedCards }) => {
+const MoviesCardList = ({ moviesAreLeft, isSaved, renderedCards, movies}) => {
   const [items, setItems] = React.useState([]);
 
-  React.useEffect(() => {
-    fetch("https://api.nomoreparties.co/beatfilm-movies")
-      .then((res) => {
-        return res.json();
-      })
-      .then((arr) => {
-        setItems(arr);
-      });
-  }, []);
+  // React.useEffect(() => {
+  //   fetch("https://api.nomoreparties.co/beatfilm-movies")
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((arr) => {
+  //       setItems(arr);
+  //     });
+  // }, []);
 
   return (
     <section className="cards">
@@ -23,7 +25,7 @@ const MoviesCardList = ({ moviesAreLeft, isSaved, renderedCards }) => {
             <MoviesCard isSaved={true} key={card.id} {...card} />
           ))}
         {!isSaved &&
-          items.map((movie) => <MoviesCard key={movie.id} {...movie} />)}
+          movies.map((movie) => <MoviesCard key={movie.id} {...movie} />)}
       </ul>
       <div className="cards__button-container">
         <button

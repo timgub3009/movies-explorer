@@ -1,3 +1,5 @@
+import tokenStorage from "./token-storage";
+
 class MainApi {
   constructor(options) {
     this._url = options.baseUrl;
@@ -12,6 +14,15 @@ class MainApi {
   }
 
   _request(url, options) {
+    const token = tokenStorage.get();
+
+    if (token) {
+      options = {
+        ...options,
+        headers: { ...options.headers, Authorization: `Bearer ${token}` },
+      };
+    }
+
     return fetch(url, options).then(this._checkStatus);
   }
 
@@ -19,7 +30,7 @@ class MainApi {
     return this._request(`${this._url}/movies`, {
       method: "GET",
       headers: this._headers,
-      credentials: "include",
+      // credentials: "include",
     });
   }
 
@@ -27,7 +38,7 @@ class MainApi {
     return this._request(`${this._url}/movies`, {
       method: "POST",
       headers: this._headers,
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify(data),
     });
   }
@@ -36,23 +47,23 @@ class MainApi {
     return this._request(`${this._url}/movies/${movieId}`, {
       method: "DELETE",
       headers: this._headers,
-      credentials: "include",
+      // credentials: "include",
     });
   }
 
-  getUser() {
-    return this._request(`${this._url}/me`, {
+  getUserInfo() {
+    return this._request(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers,
-      credentials: "include",
+      // credentials: "include",
     });
   }
 
-  updateUser({ name, email }) {
-    return this._request(`${this._url}/me`, {
+  updateUser(name, email) {
+    return this._request(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify({
         name,
         email,
@@ -60,11 +71,11 @@ class MainApi {
     });
   }
 
-  register({ name, email, password }) {
+  register(name, email, password) {
     return this._request(`${this._url}/signup`, {
       method: "POST",
       headers: this._headers,
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify({
         name,
         email,
@@ -73,11 +84,11 @@ class MainApi {
     });
   }
 
-  login({ email, password }) {
+  login(email, password) {
     return this._request(`${this._url}/signin`, {
       method: "POST",
       headers: this._headers,
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify({
         email,
         password,
@@ -87,7 +98,8 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: "https://api.timur.nomoredomains.rocks",
+  // baseUrl: "https://api.timur.nomoredomains.rocks",
+  baseUrl: "http://localhost:3001",
   headers: {
     "Content-Type": "application/json",
   },

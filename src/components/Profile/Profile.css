@@ -15,7 +15,6 @@
 
 .profile__form {
   min-width: 410px;
-  margin-bottom: 220px;
   display: flex;
   flex-direction: column;
   gap: 17px;
@@ -48,6 +47,7 @@
 }
 
 .profile__buttons {
+  margin-top: 220px;
   display: flex;
   flex-direction: column;
   gap: 16px;
