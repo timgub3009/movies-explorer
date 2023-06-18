@@ -4,11 +4,9 @@ import button from "../../images/search_btn.svg";
 import icon from "../../images/search-icon.svg";
 import "./SearchForm.css";
 import useFormValidation from "../../hooks/useFormValidation";
-import moviesApi from "../../utils/MoviesApi";
 import safeStorage from "../../utils/safe-storage";
 
-
-const SearchForm = ({onSubmitFilter, movies}) => {
+const SearchForm = ({ onSearch }) => {
   // const [searchValue, setSearchValue] = React.useState(function getInitialSearchValue() {
   //   if (typeof window == 'undefined') return "";
   //   return window.localStorage.getItem("searchValue") ?? "";
@@ -18,18 +16,17 @@ const SearchForm = ({onSubmitFilter, movies}) => {
   const [searchError, setSearchError] = React.useState(null);
   const searchInputRef = React.useRef(null);
 
-  const SEARCH_VALUE_STORAGE_KEY = "searchValue";
-
   React.useEffect(() => {
-    const maybeInitialSearchValue = safeStorage.getItem(SEARCH_VALUE_STORAGE_KEY);
+    const maybeInitialSearchValue = safeStorage.getItem("searchValue")?.trim();
     if (maybeInitialSearchValue) {
       setSearchValue(maybeInitialSearchValue);
+      onSearch({ searchValue: maybeInitialSearchValue }, /*searchIfLocalStorageHasMovies=*/true);
     }
-  }, []);
+  }, [onSearch]);
 
   const handleSearchValueChange = (event) => {
     const value = event.target.value;
-    safeStorage.setItem(SEARCH_VALUE_STORAGE_KEY, value);
+    safeStorage.setItem("searchValue", value);
     setSearchValue(value);
   };
 
@@ -38,27 +35,21 @@ const SearchForm = ({onSubmitFilter, movies}) => {
   // let input = React.createElement("div", null, React.createElement("input", { value: "hello" }));
   // { type: 'div', props: { children: { type: 'input', props: { value: 'Hello', children: { type: 'span} } } }}
 
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const searchValueCleaned = searchValue.trim();
 
-    if (searchValueCleaned.length == 0) {
+    if (searchValueCleaned.length === 0) {
       searchInputRef.current.focus();
-      setSearchValue(searchValueCleaned); // rmeove whitespace
+      setSearchValue(searchValueCleaned); // remove whitespace
       setSearchError("Error message from practicum");
       return;
     }
 
     setSearchError(null);
-
-    onSubmitFilter();
-
-    const filteredMovies = movies.filter((movie) => movie.nameRU.toLowerCase().includes(searchValue.toLowerCase()));
-
-
-    // make an http request or do something else....
+    onSearch({
+      searchValue: searchValueCleaned /* checkboxFieldName: checkboxValue */,
+    });
 
     // const formData = new FormData(event.target);
     // const search = formData.get("search");

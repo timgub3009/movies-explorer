@@ -4,21 +4,21 @@ import "./FilterCheckbox.css";
 const FilterCheckbox = () => {
   const [isShort, setIsShort] = React.useState(false);
 
-  const handleCheckbox = () => {
-    if (!isShort)
-    setIsShort(true);
-    else {
-      setIsShort(false);
-    }
-  }
-
   return (
     <div className="filter">
-      <label className="filter__checkbox">
-        <input type="checkbox" checked={isShort} onClick={handleCheckbox} className="filter__input" />
+      <label htmlFor="is-short" className="filter__checkbox">
+      <p className="filter__text">Короткометражки</p> 
+        <input
+          id="is-short"
+          name="is-short"
+          type="checkbox"
+          checked={isShort}
+          onChange={(event) => setIsShort(event.target.checked)}
+          className="filter__input"
+        />
         <span className="filter__toggler" />
       </label>
-      <p className="filter__text">Короткометражки</p>
+      {/* <p className="filter__text"></p> */}
     </div>
   );
 };

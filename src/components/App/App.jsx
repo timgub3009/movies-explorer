@@ -85,7 +85,6 @@ const App = () => {
   };
 
   const updateUser = (name, email) => {
-    console.log(name, email);
     mainApi
       .updateUser(name, email)
       .then((userData) => {
