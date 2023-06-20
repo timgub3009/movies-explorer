@@ -28,6 +28,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 .signup__placeholder {
@@ -74,8 +76,13 @@
   font-size: 10px;
   line-height: 1.12;
   transition: 0.3s;
-  position: relative;
-  top: -5px;
+  position: absolute;
+  top: 72px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .popup__error_active {
@@ -96,6 +103,11 @@
   padding: 0;
   cursor: pointer;
   margin-top: 69px;
+}
+
+.signup__button:disabled {
+  background-color: #a8c3ef;
+  color: black;
 }
 
 .signup__question {

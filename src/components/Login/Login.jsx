@@ -4,9 +4,9 @@ import { NavLink, Link } from "react-router-dom";
 import "./Login.css";
 import useFormValidation from "../../hooks/useFormValidation";
 
-const Login = ({onLogin}) => {
-
-  const {values, handleChange, errors, resetValidation, isValid} = useFormValidation({});
+const Login = ({ onLogin }) => {
+  const { values, handleChange, errors, resetValidation, isValid } =
+    useFormValidation({});
 
   React.useEffect(() => {
     resetValidation();
@@ -37,12 +37,17 @@ const Login = ({onLogin}) => {
               placeholder="email"
               minLength="2"
               maxLength="30"
-              value={values.email || ''}
+              value={values.email || ""}
               onChange={handleChange}
               required
             />
-            <span id="email-error" className={`popup__error ${errors.email && 'popup__error_active'}`}>
-              {errors.email || ''}
+            <span
+              id="email-error"
+              className={`popup__error ${
+                errors.email && "popup__error_active"
+              }`}
+            >
+              {errors.email || ""}
             </span>
           </label>
           <label htmlFor="password" className="signin__label">
@@ -59,8 +64,13 @@ const Login = ({onLogin}) => {
               onChange={handleChange}
               required
             />
-            <span id="email-error" className={`popup__error ${errors.password && 'popup__error_active'}`}>
-              {errors.password || ''}
+            <span
+              id="email-error"
+              className={`popup__error ${
+                errors.password && "popup__error_active"
+              }`}
+            >
+              {errors.password || ""}
             </span>
           </label>
           <button type="submit" className="signin__button" disabled={!isValid}>

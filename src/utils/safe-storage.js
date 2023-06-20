@@ -27,7 +27,7 @@ const safeStorage = {
   },
   /**
    * Does the same as window.localStorage.removeItem, but catches errors.
-   * @param {string} key 
+   * @param {string} key
    */
   removeItem(key) {
     try {

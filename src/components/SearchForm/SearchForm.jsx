@@ -1,26 +1,23 @@
 import React from "react";
-import FilterCheckBox from "../FilterCheckbox/FilterCheckbox";
 import button from "../../images/search_btn.svg";
 import icon from "../../images/search-icon.svg";
 import "./SearchForm.css";
-import useFormValidation from "../../hooks/useFormValidation";
 import safeStorage from "../../utils/safe-storage";
 
 const SearchForm = ({ onSearch }) => {
-  // const [searchValue, setSearchValue] = React.useState(function getInitialSearchValue() {
-  //   if (typeof window == 'undefined') return "";
-  //   return window.localStorage.getItem("searchValue") ?? "";
-  // });
-
   const [searchValue, setSearchValue] = React.useState("");
   const [searchError, setSearchError] = React.useState(null);
   const searchInputRef = React.useRef(null);
+  const [isShort, setIsShort] = React.useState("");
 
   React.useEffect(() => {
     const maybeInitialSearchValue = safeStorage.getItem("searchValue")?.trim();
     if (maybeInitialSearchValue) {
       setSearchValue(maybeInitialSearchValue);
-      onSearch({ searchValue: maybeInitialSearchValue }, /*searchIfLocalStorageHasMovies=*/true);
+      onSearch(
+        { searchValue: maybeInitialSearchValue },
+        /*searchIfLocalStorageHasMovies=*/ true
+      );
     }
   }, [onSearch]);
 
@@ -30,11 +27,6 @@ const SearchForm = ({ onSearch }) => {
     setSearchValue(value);
   };
 
-  // let value = "the fast and the furious 2";
-  // let input = <div><input value={"hello"} /></div>
-  // let input = React.createElement("div", null, React.createElement("input", { value: "hello" }));
-  // { type: 'div', props: { children: { type: 'input', props: { value: 'Hello', children: { type: 'span} } } }}
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const searchValueCleaned = searchValue.trim();
@@ -42,23 +34,15 @@ const SearchForm = ({ onSearch }) => {
     if (searchValueCleaned.length === 0) {
       searchInputRef.current.focus();
       setSearchValue(searchValueCleaned); // remove whitespace
-      setSearchError("Error message from practicum");
+      setSearchError("Введите хотя бы одну букву(");
       return;
     }
 
     setSearchError(null);
     onSearch({
-      searchValue: searchValueCleaned /* checkboxFieldName: checkboxValue */,
+      searchValue: searchValueCleaned,
+      isShort,
     });
-
-    // const formData = new FormData(event.target);
-    // const search = formData.get("search");
-    // console.log(formData.get("search"));
-
-    // const formInputs = formElement.elements;
-    // console.log("formElement", formElement);
-    // console.log("formInputs", formInputs);
-    // console.log(formElement.elements.search.value);
   };
 
   return (
@@ -82,14 +66,12 @@ const SearchForm = ({ onSearch }) => {
             id="search"
             value={searchValue}
             onChange={handleSearchValueChange}
-            // required
-            // aria - Accessible Rich Internet Applications
             aria-required="true"
-            aria-invalid={searchError ? "true" : undefined}
+            aria-invalid={searchError ? "true" : undefined} // aria - Accessible Rich Internet Applications
             aria-errormessage={searchError ? "search-error" : undefined}
           />
           {searchError ? (
-            <p role="alert" id="search-error">
+            <p role="alert" id="search-error" className="search__error">
               {searchError}
             </p>
           ) : null}
@@ -101,7 +83,23 @@ const SearchForm = ({ onSearch }) => {
             />
           </button>
         </form>
-        <FilterCheckBox />
+        <div className="filter">
+          <label htmlFor="is-short" className="filter__checkbox">
+            <p className="filter__text">Короткометражки</p>
+            <input
+              id="is-short"
+              name="is-short"
+              type="checkbox"
+              checked={isShort}
+              onChange={(event) => {
+                setIsShort(event.target.checked);
+                onSearch({ searchValue, isShort: event.target.checked });
+              }}
+              className="filter__input"
+            />
+            <span className="filter__toggler" />
+          </label>
+        </div>
       </div>
     </section>
   );

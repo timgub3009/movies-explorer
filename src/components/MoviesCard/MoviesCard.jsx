@@ -1,7 +1,7 @@
 import React from "react";
 import "./MoviesCard.css";
 
-const MoviesCard = ({ image, duration, nameRU, isSaved }) => {
+const MoviesCard = ({ image, duration, nameRU, isSaved, trailerLink }) => {
   const [isLiked, setIsLiked] = React.useState(false);
   const [isToRemove, setIsToRemove] = React.useState(false);
 
@@ -34,11 +34,18 @@ const MoviesCard = ({ image, duration, nameRU, isSaved }) => {
       onMouseEnter={handleMouseOver}
       onMouseLeave={handleMouseOut}
     >
-      <img
-        src={`https://api.nomoreparties.co/${image.url}`}
-        alt={nameRU}
-        className="cards__item-image"
-      ></img>
+      <a
+        className="cards__trailer-link"
+        href={trailerLink}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          src={`https://api.nomoreparties.co/${image.url}`}
+          alt={nameRU}
+          className="cards__item-image"
+        ></img>
+      </a>
       <div className="cards__item-info">
         <p className="cards__item-title">{nameRU}</p>
         {isSaved && (

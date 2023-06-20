@@ -4,7 +4,7 @@ import "./Navigation.css";
 import icon from "../../images/acc_icon.svg";
 import PopupMenu from "../PopupMenu/PopupMenu";
 
-const Navigation = () => {
+const Navigation = ({ windowWidth }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleClick = () => {
@@ -13,18 +13,6 @@ const Navigation = () => {
       setIsOpen(false);
     }
   };
-
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
-
-  const setWindowDimensions = () => {
-    setWindowWidth(window.innerWidth);
-  };
-  React.useEffect(() => {
-    window.addEventListener("resize", setWindowDimensions);
-    return () => {
-      window.removeEventListener("resize", setWindowDimensions);
-    };
-  }, []);
 
   return (
     <nav className="navigation">

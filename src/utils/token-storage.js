@@ -14,7 +14,7 @@ const tokenStorage = {
    * @param {string} token
    */
   set(token) {
-    safeStorage.setItem(JWT_STORAGE_KEY, token)
+    safeStorage.setItem(JWT_STORAGE_KEY, token);
   },
 
   remove() {

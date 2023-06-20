@@ -5,13 +5,13 @@ import "./Header.css";
 import NavigationUnauthorized from "../NavigationUnauthorized/NavigationUnauthorized";
 import Navigation from "../Navigation/Navigation";
 
-const Header = ({ loggedIn }) => {
+const Header = ({ loggedIn, windowWidth }) => {
   return (
     <header className={`header ${!loggedIn ? "header_type_unauthorized" : ""}`}>
       <Link to="/" className="header__link">
         <img src={clickingLogo} alt="Эмблема сайта" className="header__logo" />
       </Link>
-      {loggedIn && <Navigation />}
+      {loggedIn && <Navigation windowWidth={windowWidth} />}
       {!loggedIn && <NavigationUnauthorized />}
     </header>
   );

@@ -4,9 +4,9 @@ import { NavLink, Link } from "react-router-dom";
 import "./Register.css";
 import useFormValidation from "../../hooks/useFormValidation";
 
-const Register = ({onRegister}) => {
-
-  const {values, handleChange, errors, resetValidation, isValid} = useFormValidation({});
+const Register = ({ onRegister }) => {
+  const { values, handleChange, errors, resetValidation, isValid } =
+    useFormValidation({});
 
   React.useEffect(() => {
     resetValidation();
@@ -14,7 +14,7 @@ const Register = ({onRegister}) => {
 
   function handleSubmit(evt) {
     evt.preventDefault(evt);
-    const {name, email, password} = values;
+    const { name, email, password } = values;
     onRegister(name, email, password);
   }
 
@@ -41,12 +41,15 @@ const Register = ({onRegister}) => {
               placeholder="Имя"
               minLength="2"
               maxLength="30"
-              value={values.name || ''}
+              value={values.name || ""}
               onChange={handleChange}
               required
             />
-            <span id="email-error" className={`popup__error ${errors.name && 'popup__error_active'}`}>
-              {errors.name || ''}
+            <span
+              id="name-error"
+              className={`popup__error ${errors.name && "popup__error_active"}`}
+            >
+              {errors.name || ""}
             </span>
           </label>
           <label htmlFor="email" className="signup__label">
@@ -59,12 +62,17 @@ const Register = ({onRegister}) => {
               placeholder="email"
               minLength="2"
               maxLength="30"
-              value={values.email || ''}
+              value={values.email || ""}
               onChange={handleChange}
               required
             />
-            <span id="email-error" className={`popup__error ${errors.email && 'popup__error_active'}`}>
-              {errors.email || ''}
+            <span
+              id="email-error"
+              className={`popup__error ${
+                errors.email && "popup__error_active"
+              }`}
+            >
+              {errors.email || ""}
             </span>
           </label>
           <label htmlFor="password" className="signup__label">
@@ -77,12 +85,17 @@ const Register = ({onRegister}) => {
               placeholder="Пароль"
               minLength="7"
               maxLength="14"
-              value={values.password || ''}
+              value={values.password || ""}
               onChange={handleChange}
               required
             />
-            <span id="email-error" className={`popup__error ${errors.password && 'popup__error_active'}`}>
-            {errors.password || ''}
+            <span
+              id="email-error"
+              className={`popup__error ${
+                errors.password && "popup__error_active"
+              }`}
+            >
+              {errors.password || ""}
             </span>
           </label>
           <button type="submit" className="signup__button" disabled={!isValid}>

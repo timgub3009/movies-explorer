@@ -18,23 +18,34 @@ import Preloader from "../Preloader/Preloader";
 
 const App = () => {
   const [currentUser, setCurrentUser] = React.useState();
-  // const [loggedIn, setLoggedIn] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+
   const navigate = useNavigate();
   let location = useLocation();
 
   const loggedIn = currentUser != null;
 
+  const setWindowDimensions = () => {
+    setWindowWidth(window.innerWidth);
+  };
+  React.useEffect(() => {
+    window.addEventListener("resize", setWindowDimensions);
+    return () => {
+      window.removeEventListener("resize", setWindowDimensions);
+    };
+  }, []);
+
   React.useEffect(() => {
     const handleTokenChecking = () => {
       const token = tokenStorage.get();
-  
+
       if (!token) {
         setCurrentUser(null);
         setIsLoading(false);
         return;
       }
-  
+
       mainApi
         .getUserInfo()
         .then((userData) => {
@@ -88,50 +99,58 @@ const App = () => {
     mainApi
       .updateUser(name, email)
       .then((userData) => {
-        setCurrentUser({name: userData.name,
-      email: userData.email});
+        setCurrentUser({ name: userData.name, email: userData.email });
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  if (isLoading) {
-    return <Preloader />;
-  }
-
-  return (
+  return isLoading ? (
+    <Preloader />
+  ) : (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         {location.pathname === "/" ||
         location.pathname === "/movies" ||
         location.pathname === "/saved-movies" ||
         location.pathname === "/profile" ? (
-          <Header loggedIn={loggedIn} />
+          <Header loggedIn={loggedIn} windowWidth={windowWidth} />
         ) : (
           ""
         )}
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/movies" element={<Movies />} />
-          {/* <Route
+          <Route
             path="/movies"
-            element={<ProtectedRoute component={Movies} />}
-          /> */}
-          <Route path="/saved-movies" element={<SavedMovies />} />
-          {/* <Route
-            element={<ProtectedRoute component={SavedMovies} />}
-          /> */}
+            element={
+              <ProtectedRoute
+                currentUser={currentUser}
+                component={Movies}
+                windowWidth={windowWidth}
+              />
+            }
+          />
+          <Route
+            path="/saved-movies"
+            element={
+              <ProtectedRoute
+                currentUser={currentUser}
+                component={SavedMovies}
+              />
+            }
+          />
           <Route
             path="/profile"
-            element={<Profile updateUser={updateUser} logout={handleLogout} />}
-          />
-          {/* <Route
-            path="/profile"
             element={
-              <ProtectedRoute component={Profile} updateUser={updateUser} />
+              <ProtectedRoute
+                currentUser={currentUser}
+                component={Profile}
+                updateUser={updateUser}
+                logout={handleLogout}
+              />
             }
-          /> */}
+          />
 
           <Route path="/signin" element={<Login onLogin={handleLogin} />} />
           <Route

@@ -6,77 +6,105 @@ import Preloader from "../Preloader/Preloader";
 import moviesApi from "../../utils/MoviesApi";
 import safeStorage from "../../utils/safe-storage";
 
-const Movies = () => {
-  // Array<{ title: ..., nameRU: ..., year: ... }> | undefined
+const Movies = ({ windowWidth }) => {
   const [allMovies, setAllMovies] = React.useState();
-
-  // Array<{ title: ..., nameRU: ..., year: ... }> | undefined
   const [filteredMovies, setFilteredMovies] = React.useState();
+  const [cardsAmount, setCardsAmount] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   React.useEffect(() => {
     const maybeString = safeStorage.getItem("movies");
     if (!maybeString) return;
     try {
-      setAllMovies(JSON.parse(maybeString)); // JSON.parse throws a SyntaxError in case `maybeString` is not in JSON format.
+      setAllMovies(JSON.parse(maybeString)); // JSON.parse throws a SyntaxError in case `maybeString` is not in JSON format
     } catch {
       safeStorage.removeItem("movies");
     }
   }, []);
 
-  const handleSearch = React.useCallback(({ searchValue }, searchIfLocalStorageHasMovies) => {
-    searchValue = searchValue.toLowerCase();
-    const storageHasMovies = allMovies != null;
-
-    // Hey, JavaScript, have movies already been loaded from the server or storage?
-    if (!storageHasMovies) {
-      if (searchIfLocalStorageHasMovies) {
-        return;
-      }
-      moviesApi
-        .getMovies()
-        .then((moviesArray) => {
-          setAllMovies(moviesArray); // async schedules an update, which will happen in the future, on the next rerender (maybe)
-          safeStorage.setItem("movies", JSON.stringify(moviesArray));
-          
-          setFilteredMovies(filterMovies(moviesArray, searchValue));
-        })
-        .catch(() => {
-          // we can not perform filter, server did not respond or responded witn an error.
-          // TODO: add an error message, that server did not respond try agian later or something.
-        });
-    } else {
-      setFilteredMovies(filterMovies(allMovies, searchValue));
+  React.useEffect(() => {
+    if (windowWidth > 1279) {
+      setCardsAmount(12);
+    } else if (windowWidth > 1000) {
+      setCardsAmount(9);
+    } else if (windowWidth > 720) {
+      setCardsAmount(6);
+    } else if (windowWidth > 550) {
+      setCardsAmount(5);
     }
-  }, [allMovies]);
+  }, [windowWidth]);
 
-  const isLoading = false;
+  const handleSearch = React.useCallback(
+    ({ searchValue, isShort }, searchIfLocalStorageHasMovies) => {
+      searchValue = searchValue.toLowerCase();
+      const storageHasMovies = allMovies != null;
 
-  // const onSubmitFilter = () => {
-  //   moviesApi.getMovies().then((movies) => {
-  //     // https://mdn.io/anything <- quickly search throught mdn for anything
-  //     try {
-  //       const moviesJSONString = JSON.stringify(movies); // <- an excpetion can happen here
-  //       safeStorage.setItem("movies", moviesJSONString);
-  //     } catch {
-  //       // ignored.
-  //     }
-  //   });
-  // };
+      // check if movies have already been downloaded
+      if (!storageHasMovies) {
+        if (searchIfLocalStorageHasMovies) {
+          return;
+        }
+        setIsLoading(true);
+        moviesApi
+          .getMovies()
+          .then((moviesArray) => {
+            setAllMovies(moviesArray); // async schedules an update, which will happen in the future, on the next rerender (maybe)
+            safeStorage.setItem("movies", JSON.stringify(moviesArray));
+            setFilteredMovies(filterMovies(moviesArray, searchValue, isShort));
+          })
+          .catch(() => {
+            setErrorMessage(
+              "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
+            ); // we can not perform filter, server did not respond or responded witn an error.
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      } else {
+        setFilteredMovies(filterMovies(allMovies, searchValue, isShort));
+      }
+    },
+    [allMovies]
+  );
+
+  const handleMoreMoviesBtn = () => {
+    if (windowWidth > 1279) {
+      setCardsAmount(cardsAmount + 4);
+    } else if (windowWidth > 1000) {
+      setCardsAmount(cardsAmount + 3);
+    } else if (windowWidth > 720) {
+      setCardsAmount(cardsAmount + 2);
+    } else if (windowWidth > 550) {
+      setCardsAmount(cardsAmount + 2);
+    }
+  };
 
   return (
     <div className="movies">
       <SearchForm onSearch={handleSearch} />
-      {isLoading && <Preloader />}
-      <MoviesCardList
-        movies={filteredMovies}
-        // moviesAreLeft={true}
-        // savedMovies={false}
-      />
+      {isLoading ? (
+        <Preloader />
+      ) : errorMessage ? (
+        <p>{errorMessage}</p>
+      ) : (
+        <MoviesCardList
+          movies={filteredMovies?.slice(0, cardsAmount)}
+          areMoviesLeft={
+            filteredMovies ? cardsAmount < filteredMovies.length : undefined
+          }
+          onClick={handleMoreMoviesBtn}
+        />
+      )}
     </div>
   );
 };
 
-const filterMovies = (movies, searchValue) => 
-  movies.filter((movie) => movie.nameRU.toLowerCase().includes(searchValue));
+const filterMovies = (movies, searchValue, isShort) =>
+  movies.filter(
+    (movie) =>
+      (isShort ? movie.duration <= 40 : movie) &&
+      movie.nameRU.toLowerCase().includes(searchValue)
+  );
 
 export default Movies;

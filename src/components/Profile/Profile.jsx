@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import "./Profile.css";
-import { Link } from "react-router-dom";
 import useFormValidation from "../../hooks/useFormValidation";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
@@ -8,7 +7,11 @@ const Profile = ({ updateUser, logout }) => {
   const currentUser = useContext(CurrentUserContext);
 
   const { values, setValues, handleChange, errors, resetValidation, isValid } =
-    useFormValidation({});
+    useFormValidation({ name: currentUser.name, email: currentUser.email });
+
+  React.useEffect(() => {
+    resetValidation();
+  }, [resetValidation]);
 
   useEffect(() => {
     setValues({
@@ -22,7 +25,7 @@ const Profile = ({ updateUser, logout }) => {
     const { name, email } = values;
     updateUser(name, email);
   }
-  
+
   return (
     <section className="profile">
       <h2 className="profile__heading">Привет, {currentUser.name}!</h2>
@@ -36,6 +39,9 @@ const Profile = ({ updateUser, logout }) => {
             className="profile__input"
             value={values.name}
             onChange={handleChange}
+            minLength="2"
+            maxLength="30"
+            required
           />
         </label>
         <label htmlFor="email" className="profile__label">
@@ -47,15 +53,22 @@ const Profile = ({ updateUser, logout }) => {
             className="profile__input"
             value={values.email}
             onChange={handleChange}
+            minLength="2"
+            maxLength="30"
+            required
           />
         </label>
+        <span id="profile-error" className={`profile__error ${(errors.email || errors.name) && 'profile__error_active'}`}>
+              Профиль нельзя обновить, проверьте правильность введённых данных
+            </span>
         <div className="profile__buttons">
           <button
             className="profile__link"
             type="submit"
             disabled={
-              currentUser.name === values.name.trim() &&
-              currentUser.email === values.email.trim()
+              (currentUser.name === values.name.trim() &&
+                currentUser.email === values.email.trim()) ||
+              !isValid
             }
           >
             Редактировать

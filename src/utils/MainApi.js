@@ -30,7 +30,6 @@ class MainApi {
     return this._request(`${this._url}/movies`, {
       method: "GET",
       headers: this._headers,
-      // credentials: "include",
     });
   }
 
@@ -38,7 +37,6 @@ class MainApi {
     return this._request(`${this._url}/movies`, {
       method: "POST",
       headers: this._headers,
-      // credentials: "include",
       body: JSON.stringify(data),
     });
   }
@@ -47,7 +45,6 @@ class MainApi {
     return this._request(`${this._url}/movies/${movieId}`, {
       method: "DELETE",
       headers: this._headers,
-      // credentials: "include",
     });
   }
 
@@ -55,7 +52,6 @@ class MainApi {
     return this._request(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers,
-      // credentials: "include",
     });
   }
 
@@ -63,7 +59,6 @@ class MainApi {
     return this._request(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-      // credentials: "include",
       body: JSON.stringify({
         name,
         email,
@@ -75,7 +70,6 @@ class MainApi {
     return this._request(`${this._url}/signup`, {
       method: "POST",
       headers: this._headers,
-      // credentials: "include",
       body: JSON.stringify({
         name,
         email,
@@ -88,7 +82,6 @@ class MainApi {
     return this._request(`${this._url}/signin`, {
       method: "POST",
       headers: this._headers,
-      // credentials: "include",
       body: JSON.stringify({
         email,
         password,
