@@ -116,7 +116,7 @@ const Movies = ({
         ) : (
           <ul className="cards__items">
             {filteredMovies?.slice(0, cardsAmount).map((movie) => {
-              const isLiked = savedMovies.some(
+              const isLiked = savedMovies?.some(
                 (savedMovie) => savedMovie.movieId === movie.id
               );
 

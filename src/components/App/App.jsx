@@ -27,7 +27,7 @@ const App = () => {
   // **************************************************
   const [savedMovies, setSavedMovies] = React.useState(); // Array<Movie> | undefined
   const [areSavedMoviesLoading, setAreSavedMoviesLoading] =
-    React.useState(true);
+    React.useState(false);
 
   // ERROR POPUP
   // **************************************************
