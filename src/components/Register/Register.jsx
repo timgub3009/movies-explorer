@@ -3,8 +3,11 @@ import registerLogo from "../../images/logo.svg";
 import { NavLink, Link } from "react-router-dom";
 import "./Register.css";
 import useFormValidation from "../../hooks/useFormValidation";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 const Register = ({ onRegister }) => {
+  useDocumentTitle("Регистрация");
+
   const { values, handleChange, errors, resetValidation, isValid } =
     useFormValidation({});
 

@@ -1,23 +1,41 @@
 import React from "react";
 import SearchForm from "../SearchForm/SearchForm";
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import "./Movies.css";
 import Preloader from "../Preloader/Preloader";
 import moviesApi from "../../utils/MoviesApi";
 import safeStorage from "../../utils/safe-storage";
+import MoviesCard from "../MoviesCard/MoviesCard";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
+import filterMovies from "../../utils/filterMovies";
 
-const Movies = ({ windowWidth }) => {
+const Movies = ({
+  savedMovies,
+  windowWidth,
+  onError,
+  onMovieAdd,
+  onMovieRemove,
+}) => {
+  useDocumentTitle("Фильмы");
+
+  // ALL MOVIES
+  // **************************************************
   const [allMovies, setAllMovies] = React.useState();
-  const [filteredMovies, setFilteredMovies] = React.useState();
-  const [cardsAmount, setCardsAmount] = React.useState(0);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [areMoviesLoading, setAreMoviesLoading] = React.useState(false);
 
+  // FILTERED MOVIES
+  // **************************************************
+  const [filteredMovies, setFilteredMovies] = React.useState();
+
+  // CARDS AMOUNT
+  // **************************************************
+  const [cardsAmount, setCardsAmount] = React.useState(0);
+
+  // Try to load movies from storage
   React.useEffect(() => {
     const maybeString = safeStorage.getItem("movies");
     if (!maybeString) return;
     try {
-      setAllMovies(JSON.parse(maybeString)); // JSON.parse throws a SyntaxError in case `maybeString` is not in JSON format
+      setAllMovies(JSON.parse(maybeString));
     } catch {
       safeStorage.removeItem("movies");
     }
@@ -35,40 +53,7 @@ const Movies = ({ windowWidth }) => {
     }
   }, [windowWidth]);
 
-  const handleSearch = React.useCallback(
-    ({ searchValue, isShort }, searchIfLocalStorageHasMovies) => {
-      searchValue = searchValue.toLowerCase();
-      const storageHasMovies = allMovies != null;
-
-      // check if movies have already been downloaded
-      if (!storageHasMovies) {
-        if (searchIfLocalStorageHasMovies) {
-          return;
-        }
-        setIsLoading(true);
-        moviesApi
-          .getMovies()
-          .then((moviesArray) => {
-            setAllMovies(moviesArray); // async schedules an update, which will happen in the future, on the next rerender (maybe)
-            safeStorage.setItem("movies", JSON.stringify(moviesArray));
-            setFilteredMovies(filterMovies(moviesArray, searchValue, isShort));
-          })
-          .catch(() => {
-            setErrorMessage(
-              "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
-            ); // we can not perform filter, server did not respond or responded witn an error.
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-      } else {
-        setFilteredMovies(filterMovies(allMovies, searchValue, isShort));
-      }
-    },
-    [allMovies]
-  );
-
-  const handleMoreMoviesBtn = () => {
+  const handleMoreMoviesClick = () => {
     if (windowWidth > 1279) {
       setCardsAmount(cardsAmount + 4);
     } else if (windowWidth > 1000) {
@@ -80,31 +65,86 @@ const Movies = ({ windowWidth }) => {
     }
   };
 
+  const handleSearch = React.useCallback(
+    ({ searchValue, isShort }, searchIfLocalStorageHasMovies) => {
+      searchValue = searchValue.toLowerCase();
+      const storageHasMovies = allMovies != null;
+
+      // check if movies have already been downloaded
+      if (!storageHasMovies) {
+        if (searchIfLocalStorageHasMovies) {
+          return;
+        }
+
+        setAreMoviesLoading(true);
+
+        moviesApi
+          .getMovies()
+          .then((moviesArray) => {
+            setAllMovies(moviesArray);
+            safeStorage.setItem("movies", JSON.stringify(moviesArray));
+            setFilteredMovies(filterMovies(moviesArray, searchValue, isShort));
+          })
+          .catch(() => {
+            onError(
+              "Во время запроса произошла ошибка. " +
+                "Возможно, проблема с соединением или сервер недоступен. " +
+                "Подождите немного и попробуйте ещё раз. "
+            );
+          })
+          .finally(() => {
+            setAreMoviesLoading(false);
+          });
+      } else {
+        setFilteredMovies(filterMovies(allMovies, searchValue, isShort));
+      }
+    },
+    [allMovies, onError]
+  );
+
   return (
     <div className="movies">
-      <SearchForm onSearch={handleSearch} />
-      {isLoading ? (
-        <Preloader />
-      ) : errorMessage ? (
-        <p>{errorMessage}</p>
-      ) : (
-        <MoviesCardList
-          movies={filteredMovies?.slice(0, cardsAmount)}
-          areMoviesLeft={
-            filteredMovies ? cardsAmount < filteredMovies.length : undefined
-          }
-          onClick={handleMoreMoviesBtn}
-        />
-      )}
+      <SearchForm storageKey="Movies.searchValue" onSearch={handleSearch} />
+
+      <section className="cards">
+        {areMoviesLoading ? (
+          <Preloader />
+        ) : filteredMovies && filteredMovies.length === 0 ? (
+          <p className="movies__search-error">
+            Увы, ни одного фильма не найдено...
+          </p>
+        ) : (
+          <ul className="cards__items">
+            {filteredMovies?.slice(0, cardsAmount).map((movie) => {
+              const isLiked = savedMovies.some(
+                (savedMovie) => savedMovie.movieId === movie.id
+              );
+
+              return (
+                <MoviesCard
+                  key={movie.id}
+                  movie={movie}
+                  isLiked={isLiked}
+                  onMovieLikeOrDislike={isLiked ? onMovieRemove : onMovieAdd}
+                />
+              );
+            })}
+          </ul>
+        )}
+
+        {filteredMovies &&  cardsAmount < filteredMovies.length ? (
+          <div className="cards__button-container">
+            <button
+              onClick={handleMoreMoviesClick}
+              className="cards__button-more"  
+            >
+              Ещё
+            </button>
+          </div>
+        ) : null}
+      </section>
     </div>
   );
 };
-
-const filterMovies = (movies, searchValue, isShort) =>
-  movies.filter(
-    (movie) =>
-      (isShort ? movie.duration <= 40 : movie) &&
-      movie.nameRU.toLowerCase().includes(searchValue)
-  );
 
 export default Movies;

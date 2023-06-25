@@ -33,11 +33,23 @@ class MainApi {
     });
   }
 
-  createMovie(data) {
+  saveMovie(data) {
     return this._request(`${this._url}/movies`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        country: data.country,
+        director: data.director,
+        duration: data.duration,
+        year: data.year,
+        description: data.description,
+        image: `https://api.nomoreparties.co/${data.image.url}`,
+        trailerLink: data.trailerLink,
+        thumbnail: `https://api.nomoreparties.co/${data.image.url}`,
+        movieId: data.id,
+        nameRU: data.nameRU,
+        nameEN: data.nameEN
+      }),
     });
   }
 

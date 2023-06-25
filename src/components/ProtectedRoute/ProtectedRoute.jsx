@@ -1,12 +1,20 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
-function ProtectedRoute({ component: Component, currentUser, ...props }) {
-  if (currentUser === undefined) {
-    // loading...
+function ProtectedRoute({ component: Component, ...props }) {
+  const currentUser = useCurrentUser();
+  const isCurrentUserLoading = typeof currentUser == "undefined";
+
+  if (isCurrentUserLoading) {
     return null;
   }
 
-  return currentUser ? <Component {...props} /> : <Navigate to="/" replace />;
+  if (!currentUser) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <Component {...props} />;
 }
+
 export default ProtectedRoute;

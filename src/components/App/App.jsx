@@ -15,51 +15,63 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import tokenStorage from "../../utils/token-storage";
 import Preloader from "../Preloader/Preloader";
+import Infotooltip from "../Infotooltip/Infotooltip";
 
 const App = () => {
-  const [currentUser, setCurrentUser] = React.useState();
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  // CURRENT USER
+  // **************************************************
+  const [currentUser, setCurrentUser] = React.useState(); // User | null | undefined
+  const isCurrentUserLoading = typeof currentUser == "undefined";
 
-  const navigate = useNavigate();
-  let location = useLocation();
+  // SAVED MOVIES
+  // **************************************************
+  const [savedMovies, setSavedMovies] = React.useState(); // Array<Movie> | undefined
+  const [areSavedMoviesLoading, setAreSavedMoviesLoading] =
+    React.useState(true);
 
-  const loggedIn = currentUser != null;
+  // ERROR POPUP
+  // **************************************************
+  const [popupErrorMessage, setPopupErrorMessage] = React.useState(null); // string | null
+  const isPopupOpened =
+    typeof popupErrorMessage == "string" && popupErrorMessage.length > 0;
 
-  const setWindowDimensions = () => {
-    setWindowWidth(window.innerWidth);
-  };
-  React.useEffect(() => {
-    window.addEventListener("resize", setWindowDimensions);
-    return () => {
-      window.removeEventListener("resize", setWindowDimensions);
-    };
+  const openErrorPopup = React.useCallback((errorMessage) => {
+    setPopupErrorMessage(errorMessage);
+  }, []);
+  const closeErrorPopup = React.useCallback(() => {
+    setPopupErrorMessage(null);
   }, []);
 
+  // WINDOW WIDTH
+  // **************************************************
+  const windowWidth = useWindowWidth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Try to load current user from the server.
   React.useEffect(() => {
-    const handleTokenChecking = () => {
-      const token = tokenStorage.get();
+    const token = tokenStorage.get();
+    if (!token) {
+      setCurrentUser(null);
+      return;
+    }
+    mainApi
+      .getUserInfo()
+      .then((userData) => setCurrentUser(userData))
+      .catch(() => setCurrentUser(null));
+  }, []);
 
-      if (!token) {
-        setCurrentUser(null);
-        setIsLoading(false);
-        return;
-      }
-
-      mainApi
-        .getUserInfo()
-        .then((userData) => {
-          setCurrentUser(userData);
-        })
-        .catch(() => {
-          setCurrentUser(null);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    };
-
-    handleTokenChecking();
+  // Try to load saved movies from the server.
+  React.useEffect(() => {
+    const token = tokenStorage.get();
+    if (!token) return;
+    setAreSavedMoviesLoading(true);
+    mainApi
+      .getMovies()
+      .then((movies) => setSavedMovies(movies))
+      .catch((err) => setPopupErrorMessage(err.message))
+      .finally(() => setAreSavedMoviesLoading(false));
   }, []);
 
   const handleLogin = (email, password) => {
@@ -73,8 +85,8 @@ const App = () => {
         setCurrentUser(userInfo);
         navigate("/movies", { replace: true });
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
+        setPopupErrorMessage("Введен неправильный e-mail или пароль");
       });
   };
 
@@ -87,88 +99,143 @@ const App = () => {
   const handleRegister = (name, email, password) => {
     mainApi
       .register(name, email, password)
-      .then(() => {
-        handleLogin(email, password);
-      })
-      .catch((err) => {
-        console.log(err);
+      .then(() => handleLogin(email, password))
+      .catch(() => {
+        setPopupErrorMessage(
+          "Зарегистрироваться не удалось. Пользователь с таким e-mail уже существует"
+        );
       });
   };
 
-  const updateUser = (name, email) => {
+  const handleUserUpdate = (name, email) => {
     mainApi
       .updateUser(name, email)
       .then((userData) => {
-        setCurrentUser({ name: userData.name, email: userData.email });
+        setCurrentUser({
+          ...currentUser,
+          name: userData.name,
+          email: userData.email,
+        });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        setPopupErrorMessage("Отредактировать профиль не удалось");
       });
   };
 
-  return isLoading ? (
-    <Preloader />
-  ) : (
+  const handleMovieAdd = (movie) => {
+    mainApi
+      .saveMovie(movie)
+      .then((savedMovie) => {
+        setSavedMovies([...savedMovies, savedMovie]);
+      })
+      .catch((err) => {
+        setSavedMovies(savedMovies);
+        setPopupErrorMessage(`Что-то сломалось. ${err.message}`);
+      });
+  };
+
+  const handleMovieRemove = (movie) => {
+    const movieId = movie.id ?? movie.movieId;
+    setSavedMovies(
+      savedMovies.filter((savedMovie) => savedMovie.movieId !== movieId)
+    );
+
+    return mainApi.deleteMovie(movieId).catch((err) => {
+      setSavedMovies(savedMovies);
+      setPopupErrorMessage(`Что-то сломалось. ${err.message}`);
+    });
+  };
+
+  if (isCurrentUserLoading || areSavedMoviesLoading) {
+    return <Preloader />;
+  }
+
+  return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        {location.pathname === "/" ||
-        location.pathname === "/movies" ||
-        location.pathname === "/saved-movies" ||
-        location.pathname === "/profile" ? (
-          <Header loggedIn={loggedIn} windowWidth={windowWidth} />
-        ) : (
-          ""
-        )}
+        {["/", "/movies", "/saved-movies", "/profile"].includes(
+          location.pathname
+        ) ? (
+          <Header windowWidth={windowWidth} />
+        ) : null}
+
         <Routes>
           <Route path="/" element={<Main />} />
+
           <Route
             path="/movies"
             element={
               <ProtectedRoute
-                currentUser={currentUser}
                 component={Movies}
+                savedMovies={savedMovies}
                 windowWidth={windowWidth}
+                onError={openErrorPopup}
+                onMovieAdd={handleMovieAdd}
+                onMovieRemove={handleMovieRemove}
               />
             }
           />
+
           <Route
             path="/saved-movies"
             element={
               <ProtectedRoute
-                currentUser={currentUser}
                 component={SavedMovies}
+                savedMovies={savedMovies}
+                onMovieRemove={handleMovieRemove}
               />
             }
           />
+
           <Route
             path="/profile"
             element={
               <ProtectedRoute
-                currentUser={currentUser}
                 component={Profile}
-                updateUser={updateUser}
-                logout={handleLogout}
+                onUpdateUser={handleUserUpdate}
+                onLogout={handleLogout}
               />
             }
           />
 
           <Route path="/signin" element={<Login onLogin={handleLogin} />} />
+
           <Route
             path="/signup"
             element={<Register onRegister={handleRegister} />}
           />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
-        {location.pathname === "/" ||
-        location.pathname === "/movies" ||
-        location.pathname === "/saved-movies" ? (
+
+        {["/", "/movies", "/saved-movies"].includes(location.pathname) ? (
           <Footer />
-        ) : (
-          ""
-        )}
+        ) : null}
+
+        <Infotooltip
+          status={isPopupOpened}
+          errorMessage={popupErrorMessage}
+          onClose={closeErrorPopup}
+        />
       </div>
     </CurrentUserContext.Provider>
   );
 };
 
 export default App;
+
+function useWindowWidth() {
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+
+  React.useEffect(() => {
+    const setWindowDimensions = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", setWindowDimensions);
+    return () => {
+      window.removeEventListener("resize", setWindowDimensions);
+    };
+  }, []);
+
+  return windowWidth;
+}

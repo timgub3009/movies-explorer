@@ -1,10 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Profile.css";
 import useFormValidation from "../../hooks/useFormValidation";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
-const Profile = ({ updateUser, logout }) => {
-  const currentUser = useContext(CurrentUserContext);
+const Profile = ({ onUpdateUser, onLogout }) => {
+  useDocumentTitle("Аккаунт");
+
+  const currentUser = useCurrentUser();
 
   const { values, setValues, handleChange, errors, resetValidation, isValid } =
     useFormValidation({ name: currentUser.name, email: currentUser.email });
@@ -23,7 +26,7 @@ const Profile = ({ updateUser, logout }) => {
   function handleSubmit(evt) {
     evt.preventDefault(evt);
     const { name, email } = values;
-    updateUser(name, email);
+    onUpdateUser(name, email);
   }
 
   return (
@@ -58,9 +61,14 @@ const Profile = ({ updateUser, logout }) => {
             required
           />
         </label>
-        <span id="profile-error" className={`profile__error ${(errors.email || errors.name) && 'profile__error_active'}`}>
-              Профиль нельзя обновить, проверьте правильность введённых данных
-            </span>
+        <span
+          id="profile-error"
+          className={`profile__error ${
+            (errors.email || errors.name) && "profile__error_active"
+          }`}
+        >
+          Профиль нельзя обновить, проверьте правильность введённых данных
+        </span>
         <div className="profile__buttons">
           <button
             className="profile__link"
@@ -75,7 +83,7 @@ const Profile = ({ updateUser, logout }) => {
           </button>
           <button
             className="profile__link profile__link_type_signout"
-            onClick={logout}
+            onClick={onLogout}
           >
             Выйти из аккаунта
           </button>

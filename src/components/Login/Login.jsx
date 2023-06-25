@@ -3,8 +3,11 @@ import loginLogo from "../../images/logo.svg";
 import { NavLink, Link } from "react-router-dom";
 import "./Login.css";
 import useFormValidation from "../../hooks/useFormValidation";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 const Login = ({ onLogin }) => {
+  useDocumentTitle("Войти");
+
   const { values, handleChange, errors, resetValidation, isValid } =
     useFormValidation({});
 

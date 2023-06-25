@@ -4,14 +4,14 @@ import icon from "../../images/search-icon.svg";
 import "./SearchForm.css";
 import safeStorage from "../../utils/safe-storage";
 
-const SearchForm = ({ onSearch }) => {
+const SearchForm = ({ storageKey, onSearch, shouldValidate = true }) => {
   const [searchValue, setSearchValue] = React.useState("");
   const [searchError, setSearchError] = React.useState(null);
   const searchInputRef = React.useRef(null);
   const [isShort, setIsShort] = React.useState("");
 
   React.useEffect(() => {
-    const maybeInitialSearchValue = safeStorage.getItem("searchValue")?.trim();
+    const maybeInitialSearchValue = safeStorage.getItem(storageKey)?.trim();
     if (maybeInitialSearchValue) {
       setSearchValue(maybeInitialSearchValue);
       onSearch(
@@ -19,11 +19,11 @@ const SearchForm = ({ onSearch }) => {
         /*searchIfLocalStorageHasMovies=*/ true
       );
     }
-  }, [onSearch]);
+  }, [onSearch, storageKey]);
 
   const handleSearchValueChange = (event) => {
     const value = event.target.value;
-    safeStorage.setItem("searchValue", value);
+    safeStorage.setItem(storageKey, value);
     setSearchValue(value);
   };
 
@@ -31,7 +31,7 @@ const SearchForm = ({ onSearch }) => {
     event.preventDefault();
     const searchValueCleaned = searchValue.trim();
 
-    if (searchValueCleaned.length === 0) {
+    if (shouldValidate && searchValueCleaned.length === 0) {
       searchInputRef.current.focus();
       setSearchValue(searchValueCleaned); // remove whitespace
       setSearchError("Введите хотя бы одну букву(");

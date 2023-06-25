@@ -10,6 +10,8 @@
 
 Макет доступен по ссылке: https://disk.yandex.ru/d/iIjtKUUz_uk4Fw
 
+
+
 ## Используемые технологии
 HTML, CSS, JavaScript (БЭМ, Git, Figma, PerfectPixel, flexbox, grid, ООП, Webpack), React. 
 

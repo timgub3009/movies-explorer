@@ -1,8 +1,11 @@
 import React from "react";
 import "./NotFound.css";
 import { Link } from "react-router-dom";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 const NotFound = () => {
+  useDocumentTitle("Страница не найдена");
+
   return (
     <div className="not-found">
       <div className="not-found__container">
