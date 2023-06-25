@@ -12,9 +12,13 @@
 
 Ссылка на pull request: https://github.com/timgub3009/movies-explorer/pull/2 
 
+IP 158.160.99.62;
+
+Backend https://api.timur.nomoredomains.rocks/; Frontend https://timur.nomoredomains.rocks/;
+
 ## Используемые технологии
 HTML, CSS, JavaScript (БЭМ, Git, Figma, PerfectPixel, flexbox, grid, ООП, Webpack), React. 
 
 ## Планы по доработке
 
-
+-
