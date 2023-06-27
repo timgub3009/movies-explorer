@@ -1,11 +1,12 @@
 import React from "react";
 import loginLogo from "../../images/logo.svg";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, Navigate } from "react-router-dom";
 import "./Login.css";
 import useFormValidation from "../../hooks/useFormValidation";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { EMAIL_REGEX } from "../../utils/constants";
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin, currentUser, isLoading }) => {
   useDocumentTitle("Войти");
 
   const { values, handleChange, errors, resetValidation, isValid } =
@@ -21,8 +22,9 @@ const Login = ({ onLogin }) => {
     onLogin(email, password);
   }
 
-  return (
-    <section className="signin">
+  return currentUser ? (
+    <Navigate to='/' replace />) : (
+      <section className="signin">
       <div className="signin__container">
         <Link to="/">
           {" "}
@@ -34,7 +36,8 @@ const Login = ({ onLogin }) => {
             <span className="signin__placeholder">E-mail</span>
             <input
               className="signin__input"
-              type="email"
+              type="text"
+              pattern={EMAIL_REGEX}
               name="email"
               id="email"
               placeholder="email"
@@ -76,7 +79,7 @@ const Login = ({ onLogin }) => {
               {errors.password || ""}
             </span>
           </label>
-          <button type="submit" className="signin__button" disabled={!isValid}>
+          <button type="submit" className="signin__button" disabled={!isValid || isLoading}>
             Войти
           </button>
         </form>

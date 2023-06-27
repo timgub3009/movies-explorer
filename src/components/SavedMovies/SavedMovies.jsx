@@ -30,7 +30,6 @@ const SavedMovies = ({ savedMovies, onMovieRemove }) => {
   return (
     <div className="saved-movies">
       <SearchForm
-        storageKey="SavedMovies.searchValue"
         shouldValidate={false}
         onSearch={handleSearch}
       />

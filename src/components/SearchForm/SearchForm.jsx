@@ -11,19 +11,35 @@ const SearchForm = ({ storageKey, onSearch, shouldValidate = true }) => {
   const [isShort, setIsShort] = React.useState("");
 
   React.useEffect(() => {
+    if (!storageKey) {
+      return;
+    }
+
     const maybeInitialSearchValue = safeStorage.getItem(storageKey)?.trim();
+    let maybeInitialCheckboxStatus = safeStorage.getItem("isShortOn");
+
+    if (maybeInitialCheckboxStatus) {
+      maybeInitialCheckboxStatus = JSON.parse(maybeInitialCheckboxStatus); // this may throw an error
+      setIsShort(maybeInitialCheckboxStatus);
+    }
+
     if (maybeInitialSearchValue) {
       setSearchValue(maybeInitialSearchValue);
+    }
+
+    if (maybeInitialCheckboxStatus != null || maybeInitialSearchValue)
       onSearch(
-        { searchValue: maybeInitialSearchValue },
+        {
+          searchValue: maybeInitialSearchValue ?? "",
+          isShort: maybeInitialCheckboxStatus ?? true,
+        },
         /*searchIfLocalStorageHasMovies=*/ true
       );
-    }
   }, [onSearch, storageKey]);
 
   const handleSearchValueChange = (event) => {
     const value = event.target.value;
-    safeStorage.setItem(storageKey, value);
+    if (storageKey) safeStorage.setItem(storageKey, value);
     setSearchValue(value);
   };
 
@@ -93,6 +109,7 @@ const SearchForm = ({ storageKey, onSearch, shouldValidate = true }) => {
               checked={isShort}
               onChange={(event) => {
                 setIsShort(event.target.checked);
+                if (storageKey) safeStorage.setItem("isShortOn", event.target.checked);
                 onSearch({ searchValue, isShort: event.target.checked });
               }}
               className="filter__input"

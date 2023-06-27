@@ -7,6 +7,7 @@ import safeStorage from "../../utils/safe-storage";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import filterMovies from "../../utils/filterMovies";
+import { FULL_WIDTH, SMALLER_WIDTH, SMARTPHONE_WIDTH, STANDART_WIDTH } from "../../utils/constants";
 
 const Movies = ({
   savedMovies,
@@ -42,25 +43,25 @@ const Movies = ({
   }, []);
 
   React.useEffect(() => {
-    if (windowWidth > 1279) {
+    if (windowWidth > FULL_WIDTH) {
       setCardsAmount(12);
-    } else if (windowWidth > 1000) {
+    } else if (windowWidth > STANDART_WIDTH) {
       setCardsAmount(9);
-    } else if (windowWidth > 720) {
+    } else if (windowWidth > SMALLER_WIDTH) {
       setCardsAmount(6);
-    } else if (windowWidth > 550) {
+    } else if (windowWidth > SMARTPHONE_WIDTH) {
       setCardsAmount(5);
     }
   }, [windowWidth]);
 
   const handleMoreMoviesClick = () => {
-    if (windowWidth > 1279) {
+    if (windowWidth > FULL_WIDTH) {
       setCardsAmount(cardsAmount + 4);
-    } else if (windowWidth > 1000) {
+    } else if (windowWidth > STANDART_WIDTH) {
       setCardsAmount(cardsAmount + 3);
-    } else if (windowWidth > 720) {
+    } else if (windowWidth > SMALLER_WIDTH) {
       setCardsAmount(cardsAmount + 2);
-    } else if (windowWidth > 550) {
+    } else if (windowWidth > SMARTPHONE_WIDTH) {
       setCardsAmount(cardsAmount + 2);
     }
   };

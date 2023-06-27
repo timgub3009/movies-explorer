@@ -1,6 +1,7 @@
 import React from "react";
 import "./MoviesCard.css";
 import { useLocation } from "react-router-dom";
+import { API_URL } from "../../utils/constants";
 
 const MoviesCard = ({
   movie, // what movie?
@@ -43,7 +44,7 @@ const MoviesCard = ({
         <img
           src={
             location.pathname === "/movies"
-              ? `https://api.nomoreparties.co${movie.image.url}`
+              ? `${API_URL}${movie.image.url}`
               : movie.image
           }
           alt={movie.nameRU}

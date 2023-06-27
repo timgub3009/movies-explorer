@@ -31,15 +31,15 @@ const App = () => {
 
   // ERROR POPUP
   // **************************************************
-  const [popupErrorMessage, setPopupErrorMessage] = React.useState(null); // string | null
+  const [popupMessage, setPopupMessage] = React.useState(null); // string | null
   const isPopupOpened =
-    typeof popupErrorMessage == "string" && popupErrorMessage.length > 0;
+    typeof popupMessage == "string" && popupMessage.length > 0
 
-  const openErrorPopup = React.useCallback((errorMessage) => {
-    setPopupErrorMessage(errorMessage);
+  const openPopup = React.useCallback((popupMessage) => {
+    setPopupMessage(popupMessage);
   }, []);
-  const closeErrorPopup = React.useCallback(() => {
-    setPopupErrorMessage(null);
+  const closePopup = React.useCallback(() => {
+    setPopupMessage(null);
   }, []);
 
   // WINDOW WIDTH
@@ -48,6 +48,8 @@ const App = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [isLoading, setIsLoading] = React.useState(false);
 
   // Try to load current user from the server.
   React.useEffect(() => {
@@ -70,11 +72,12 @@ const App = () => {
     mainApi
       .getMovies()
       .then((movies) => setSavedMovies(movies))
-      .catch((err) => setPopupErrorMessage(err.message))
+      .catch((err) => setPopupMessage(err.message))
       .finally(() => setAreSavedMoviesLoading(false));
   }, []);
 
   const handleLogin = (email, password) => {
+    setIsLoading(true);
     mainApi
       .login(email, password)
       .then((data) => {
@@ -83,11 +86,12 @@ const App = () => {
       })
       .then((userInfo) => {
         setCurrentUser(userInfo);
+        setPopupMessage('Вы авторизовались!');
         navigate("/movies", { replace: true });
       })
       .catch(() => {
-        setPopupErrorMessage("Введен неправильный e-mail или пароль");
-      });
+        setPopupMessage("Введен неправильный e-mail или пароль");
+      }).finally(() => setIsLoading(false));
   };
 
   const handleLogout = () => {
@@ -97,17 +101,19 @@ const App = () => {
   };
 
   const handleRegister = (name, email, password) => {
+    setIsLoading(true);
     mainApi
       .register(name, email, password)
       .then(() => handleLogin(email, password))
       .catch(() => {
-        setPopupErrorMessage(
+        setPopupMessage(
           "Зарегистрироваться не удалось. Пользователь с таким e-mail уже существует"
         );
-      });
+      }).finally(() => setIsLoading(false));
   };
 
   const handleUserUpdate = (name, email) => {
+    setIsLoading(true);
     mainApi
       .updateUser(name, email)
       .then((userData) => {
@@ -117,9 +123,10 @@ const App = () => {
           email: userData.email,
         });
       })
+      .then(() => setPopupMessage('Данные отредактированы'))
       .catch(() => {
-        setPopupErrorMessage("Отредактировать профиль не удалось");
-      });
+        setPopupMessage("Отредактировать профиль не удалось");
+      }).finally(() => setIsLoading(false));
   };
 
   const handleMovieAdd = (movie) => {
@@ -130,7 +137,7 @@ const App = () => {
       })
       .catch((err) => {
         setSavedMovies(savedMovies);
-        setPopupErrorMessage(`Что-то сломалось. ${err.message}`);
+        setPopupMessage(`Что-то сломалось. ${err.message}`);
       });
   };
 
@@ -142,7 +149,7 @@ const App = () => {
 
     return mainApi.deleteMovie(movieId).catch((err) => {
       setSavedMovies(savedMovies);
-      setPopupErrorMessage(`Что-то сломалось. ${err.message}`);
+      setPopupMessage(`Что-то сломалось. ${err.message}`);
     });
   };
 
@@ -169,7 +176,7 @@ const App = () => {
                 component={Movies}
                 savedMovies={savedMovies}
                 windowWidth={windowWidth}
-                onError={openErrorPopup}
+                onError={openPopup}
                 onMovieAdd={handleMovieAdd}
                 onMovieRemove={handleMovieRemove}
               />
@@ -194,15 +201,16 @@ const App = () => {
                 component={Profile}
                 onUpdateUser={handleUserUpdate}
                 onLogout={handleLogout}
+                isLoading={isLoading}
               />
             }
           />
 
-          <Route path="/signin" element={<Login onLogin={handleLogin} />} />
+          <Route path="/signin" element={<Login onLogin={handleLogin} currentUser={currentUser} isLoading={isLoading}/>} />
 
           <Route
             path="/signup"
-            element={<Register onRegister={handleRegister} />}
+            element={<Register onRegister={handleRegister} currentUser={currentUser} isLoading={isLoading}/>}
           />
 
           <Route path="*" element={<NotFound />} />
@@ -214,8 +222,8 @@ const App = () => {
 
         <Infotooltip
           status={isPopupOpened}
-          errorMessage={popupErrorMessage}
-          onClose={closeErrorPopup}
+          popupMessage={popupMessage}
+          onClose={closePopup}
         />
       </div>
     </CurrentUserContext.Provider>

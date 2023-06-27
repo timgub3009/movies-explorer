@@ -4,7 +4,7 @@ import useFormValidation from "../../hooks/useFormValidation";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 
-const Profile = ({ onUpdateUser, onLogout }) => {
+const Profile = ({ onUpdateUser, onLogout, isLoading }) => {
   useDocumentTitle("Аккаунт");
 
   const currentUser = useCurrentUser();
@@ -76,8 +76,7 @@ const Profile = ({ onUpdateUser, onLogout }) => {
             disabled={
               (currentUser.name === values.name.trim() &&
                 currentUser.email === values.email.trim()) ||
-              !isValid
-            }
+              (!isValid || isLoading)}
           >
             Редактировать
           </button>

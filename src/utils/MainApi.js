@@ -1,3 +1,4 @@
+import { API_URL } from "./constants";
 import tokenStorage from "./token-storage";
 
 class MainApi {
@@ -43,9 +44,9 @@ class MainApi {
         duration: data.duration,
         year: data.year,
         description: data.description,
-        image: `https://api.nomoreparties.co/${data.image.url}`,
+        image: `${API_URL}${data.image.url}`,
         trailerLink: data.trailerLink,
-        thumbnail: `https://api.nomoreparties.co/${data.image.url}`,
+        thumbnail: `${API_URL}${data.image.url}`,
         movieId: data.id,
         nameRU: data.nameRU,
         nameEN: data.nameEN
@@ -104,6 +105,7 @@ class MainApi {
 
 const mainApi = new MainApi({
   baseUrl: "https://api.timur.nomoredomains.rocks",
+  // baseUrl: 'http://localhost:3001',
   headers: {
     "Content-Type": "application/json",
   },

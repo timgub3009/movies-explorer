@@ -40,6 +40,10 @@
   cursor: pointer;
   transition: ease-in-out 0.5s;
   font-size: 12px;
+  font-weight: 400;
+}
+
+.navigation__link_active {
   font-weight: 500;
 }
 

@@ -1,11 +1,12 @@
 import React from "react";
 import registerLogo from "../../images/logo.svg";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, Navigate } from "react-router-dom";
 import "./Register.css";
 import useFormValidation from "../../hooks/useFormValidation";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { EMAIL_REGEX, NAME_REGEX } from "../../utils/constants";
 
-const Register = ({ onRegister }) => {
+const Register = ({ onRegister, currentUser, isLoading }) => {
   useDocumentTitle("Регистрация");
 
   const { values, handleChange, errors, resetValidation, isValid } =
@@ -21,7 +22,9 @@ const Register = ({ onRegister }) => {
     onRegister(name, email, password);
   }
 
-  return (
+  return currentUser ? (
+    <Navigate to="/" replace />
+  ) : (
     <section className="signup">
       <div className="signup__container">
         <Link to="/">
@@ -39,6 +42,7 @@ const Register = ({ onRegister }) => {
             <input
               className="signup__input"
               type="text"
+              pattern={NAME_REGEX}
               name="name"
               id="name"
               placeholder="Имя"
@@ -59,7 +63,8 @@ const Register = ({ onRegister }) => {
             <span className="signup__placeholder">E-mail</span>
             <input
               className="signup__input"
-              type="email"
+              type="text"
+              pattern={EMAIL_REGEX}
               name="email"
               id="email"
               placeholder="email"
@@ -101,7 +106,7 @@ const Register = ({ onRegister }) => {
               {errors.password || ""}
             </span>
           </label>
-          <button type="submit" className="signup__button" disabled={!isValid}>
+          <button type="submit" className="signup__button" disabled={!isValid || isLoading}>
             Зарегистрироваться
           </button>
         </form>
