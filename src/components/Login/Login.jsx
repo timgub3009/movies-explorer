@@ -4,7 +4,6 @@ import { NavLink, Link, Navigate } from "react-router-dom";
 import "./Login.css";
 import useFormValidation from "../../hooks/useFormValidation";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
-import { EMAIL_REGEX } from "../../utils/constants";
 
 const Login = ({ onLogin, currentUser, isLoading }) => {
   useDocumentTitle("Войти");
@@ -37,7 +36,7 @@ const Login = ({ onLogin, currentUser, isLoading }) => {
             <input
               className="signin__input"
               type="text"
-              pattern={EMAIL_REGEX}
+              pattern='^([^ ]+@[^ ]+\.[a-z]{2,6}|)$'
               name="email"
               id="email"
               placeholder="email"
