@@ -1,23 +1,24 @@
 import React from "react";
 import "./MoviesCard.css";
+import { useLocation } from "react-router-dom";
+import { API_URL } from "../../utils/constants";
 
-const MoviesCard = ({ image, duration, nameRU, isSaved }) => {
-  const [isLiked, setIsLiked] = React.useState(false);
-  const [isToRemove, setIsToRemove] = React.useState(false);
-
-  const handleLikes = () => {
-    if (!isLiked) setIsLiked(true);
-    else {
-      setIsLiked(false);
-    }
-  };
+const MoviesCard = ({
+  movie, // what movie?
+  isSaved, // is it saved ?
+  isLiked, // is it liked? undefined on favorite movies (can be undefined)
+  onMovieLikeOrDislike, // add movie to saved (can be undefined)
+  onMovieRemove, // remove from saved
+}) => {
+  const [isMouseOverRemove, setIsMouseOverRemove] = React.useState(false);
+  const location = useLocation();
 
   const handleMouseOver = () => {
-    setIsToRemove(true);
+    setIsMouseOverRemove(true);
   };
 
   const handleMouseOut = () => {
-    setIsToRemove(false);
+    setIsMouseOverRemove(false);
   };
 
   const getTimeFromMins = (mins) => {
@@ -26,7 +27,7 @@ const MoviesCard = ({ image, duration, nameRU, isSaved }) => {
     return `${hours}ч ${minutes}м`;
   };
 
-  const time = getTimeFromMins(duration);
+  const time = getTimeFromMins(movie.duration);
 
   return (
     <li
@@ -34,28 +35,39 @@ const MoviesCard = ({ image, duration, nameRU, isSaved }) => {
       onMouseEnter={handleMouseOver}
       onMouseLeave={handleMouseOut}
     >
-      <img
-        src={`https://api.nomoreparties.co/${image.url}`}
-        alt={nameRU}
-        className="cards__item-image"
-      ></img>
+      <a
+        className="cards__trailer-link"
+        href={movie.trailerLink}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <img
+          src={
+            location.pathname === "/movies"
+              ? `${API_URL}${movie.image.url}`
+              : movie.image
+          }
+          alt={movie.nameRU}
+          className="cards__item-image"
+        ></img>
+      </a>
       <div className="cards__item-info">
-        <p className="cards__item-title">{nameRU}</p>
-        {isSaved && (
+        <p className="cards__item-title">{movie.nameRU}</p>
+        {isSaved ? (
           <button
             className={`cards__item-deletebutton ${
-              isToRemove && "cards__item-deletebutton_type_active"
+              isMouseOverRemove && "cards__item-deletebutton_type_active"
             } `}
+            onClick={() => onMovieRemove(movie)}
           />
-        )}
-        {!isSaved && (
+        ) : (
           <button
             className={`cards__item-likebutton ${
               isLiked
                 ? "cards__item-likebutton_type_active"
                 : "cards__item-likebutton_type_inactive"
             } `}
-            onClick={handleLikes}
+            onClick={() => onMovieLikeOrDislike(movie)}
           />
         )}
       </div>

@@ -28,6 +28,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
+  margin-bottom: 20px; 
 }
 
 .signin__placeholder {
@@ -67,14 +69,14 @@
   opacity: 0.6;
 }
 
-.popup__error {
+/* .popup__error {
   opacity: 1;
   color: #ee3465;
   font-weight: 400;
   font-size: 10px;
   line-height: 1.12;
   transition: 0.3s;
-}
+} */
 
 .signin__button {
   background-color: #4285f4;
@@ -90,6 +92,11 @@
   padding: 0;
   cursor: pointer;
   margin-top: 157px;
+}
+
+.signin__button:disabled {
+  background-color: #a8c3ef;
+  color: black;
 }
 
 .signin__question {

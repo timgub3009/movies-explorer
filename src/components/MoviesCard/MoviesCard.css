@@ -6,7 +6,13 @@
 .cards__item-image {
   width: 100%;
   height: 100%;
+}
+
+.cards__trailer-link {
   margin-bottom: 14px;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
 }
 
 .cards__item-title {
@@ -88,5 +94,20 @@
 @media screen and (max-width: 550px) {
   .cards__item-image {
     margin-bottom: 15px;
+  }
+}
+
+/* смартфоны, устройства с сенсорным экраном, с которым работают пальцами */
+@media (hover: none) and (pointer: coarse) {
+  .cards__item-deletebutton_type_active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+/* устройства с сенсорным экраном, с которым работают стилусом */
+@media (hover: none) and (pointer: fine) {
+  .cards__item-deletebutton_type_active {
+    opacity: 1;
+    visibility: visible;
   }
 }
